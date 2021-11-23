@@ -1,3 +1,22 @@
-console.log("test")
-
-console.log("test_2")
+$(function(){
+  //html読み込み後に処理を実行する
+  $("#q1").ready(function(){
+    //q1の色を緑に変更する
+    $("#q1").css("color","green");
+  });
+  //q2をクリックすると処理を実行する
+  $("#q2").on("click",function(){
+    //q2の背景色を白に変更する
+    $("#q2").css("background","white");
+  });
+  //q3をクリックすると処理を行う
+  $("#q3").on("click",function(){
+    //q3をフェードアウトさせる
+    $("#q3").fadeOut(3000);
+  });
+  //q4をクリックすると処理を行う
+  $("#q4").on("click",function(){
+    //q4の位置にクラス名largeを追加しサイズを変更する
+    $("#q4").addClass("large");
+  });
+})
