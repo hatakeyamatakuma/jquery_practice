@@ -1,0 +1,10 @@
+//.modal_open_buttonをクリックすると処理を行う
+$(".modal_open_button").on("click",function(){
+  //.modal_winを表示させる
+  $(".modal_win").fadeIn();
+});
+//.modal_close_buttonをクリックすると処理を行う
+$(".modal_close_button").on("click",function(){
+  //.modal_winを非表示にする
+  $(".modal_win").fadeOut();
+})
