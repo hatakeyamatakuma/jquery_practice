@@ -1,0 +1,30 @@
+$(function (){
+  $(".btn__submit").on("click",function(){//.btn__submitをクリックすると処理を開始する
+    console.log("苗字");//以下それぞれの項目名をconsoleに出力する
+    console.log($("#family__name").val());//以下id,classを取得し、そのvalue値をconsoleに出力する
+    console.log("名前");
+    console.log($("#given__name").val());
+    console.log("生年月日");
+    console.log($(".year").val() + "年" + $(".month").val() + "月" + $(".day").val() + "日");//それぞれ取得したクラス名を繋げて出力する
+    console.log("性別");
+    console.log($('[name="gender"]:checked').val());//name="gender"にチェックが入っていればそのvalue値を出力する
+    console.log("職業");
+    console.log($(".occupation").val());
+    console.log("アカウント名");
+    console.log($("#account__name").val());
+    console.log("メールアドレス");
+    console.log($("#email").val());
+    console.log("パスワード");
+    console.log($("#password").val());
+    console.log("確認用パスワード");
+    console.log($("#duplication__password").val());
+    console.log("住所");
+    console.log($("#address").val());
+    console.log("電話番号");
+    console.log($("#tel").val());
+    console.log("購買情報");
+    $('[name="subscription"]:checked').each(function(){//name="subscription"にチェックが入っていればそのvalue値をconsoleに出力。それを.eachでループさせる
+      console.log($(this).val())
+    });
+  });
+});
