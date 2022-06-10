@@ -1,13 +1,18 @@
 $(function (){
-  $(".btn__submit").on("click",function(){//.btn__submitをクリックすると処理を開始する
-    console.log("苗字");//以下それぞれの項目名をconsoleに出力する
-    console.log($("#family__name").val());//以下id,classを取得し、そのvalue値をconsoleに出力する
+  //.btn__submitをクリックすると処理を開始する
+  $(".btn__submit").on("click",function(){
+    //以下それぞれの項目名をconsoleに出力する
+    console.log("苗字");
+    //以下id,classを取得し、そのvalue値をconsoleに出力する
+    console.log($("#family__name").val());
     console.log("名前");
     console.log($("#given__name").val());
     console.log("生年月日");
-    console.log($(".year").val() + "年" + $(".month").val() + "月" + $(".day").val() + "日");//それぞれ取得したクラス名を繋げて出力する
+    //それぞれ取得したクラス名を繋げて出力する
+    console.log($(".year").val() + "年" + $(".month").val() + "月" + $(".day").val() + "日");
     console.log("性別");
-    console.log($('[name="gender"]:checked').val());//name="gender"にチェックが入っていればそのvalue値を出力する
+    //name="gender"にチェックが入っていればそのvalue値を出力する
+    console.log($('[name="gender"]:checked').val());
     console.log("職業");
     console.log($(".occupation").val());
     console.log("アカウント名");
@@ -23,7 +28,8 @@ $(function (){
     console.log("電話番号");
     console.log($("#tel").val());
     console.log("購買情報");
-    $('[name="subscription"]:checked').each(function(){//name="subscription"にチェックが入っていればそのvalue値をconsoleに出力。それを.eachでループさせる
+    //name="subscription"にチェックが入っていればそのvalue値をconsoleに出力。それを.eachでループさせる
+    $('[name="subscription"]:checked').each(function(){
       console.log($(this).val())
     });
   });
