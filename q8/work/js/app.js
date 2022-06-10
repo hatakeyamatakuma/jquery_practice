@@ -1,9 +1,9 @@
+  //pageCountの初期値は１
+let pageCount = 1;
 //ページの読み込みが終わったら処理を実行する
 $(function() {
-  //pageCountの初期値は１
-  let pageCount = 1;
   //ひとつ前の検索履歴の保管用
-  let searchResult = "";
+  let searchResult = " ";
   //.search-btnをクリックすると処理を開始する
   $(".search-btn").on("click",function(){
     //入力した文字をsearchWordに置き換える
@@ -24,7 +24,6 @@ $(function() {
     $.ajax(settings)
     //検索した情報がここに入る
     .done(function (response) {
-      console.log("AJAX通信は成功")
       //取得した情報をresultという変数に変換
       const result = response['@graph'];
       //関数を呼び出して要素を表示する処理を行う
@@ -32,7 +31,6 @@ $(function() {
     })
     //AJAXのやりとりでエラーが発生した場合以下の処理が実行される
     .fail(function (err) {
-      console.log("AJAX通信失敗");
       //AJAX通信が失敗したかの確認
       displayError(err)
     });
@@ -42,6 +40,10 @@ $(function() {
 
 //呼び出される関数
 function displayResult(fn){
+  //もしこの処理に入る前にfail処理に入り、メッセージ文が表示されている場合、消去する。
+  if($(".message").length){
+    $(".message").remove();
+  }
   //検索結果の操作したい部分に合わせている
   const content = fn["0"]["items"];
   //20回の繰り返し処理
@@ -63,53 +65,39 @@ function displayResult(fn){
     $(".list-inner").eq(0).append("<p>","<p>","<p>","<a>");
     //list-inner pのそれぞれに固定の文字列、適切なデータを配置
     $(".list-inner p:nth-child(1)").eq(0).append("タイトル：",contentTitle);
-    $(".list-inner p:nth-child(2)").eq(0).append("作者：",author);
-    $(".list-inner p:nth-child(3)").eq(0).append("出版社：",publisher);
+    //作者、出版社に関してはデータがない場合空欄になってしまうので、その場合"不明"と表記する。なおタイトルが空欄になることはないため省略している
+    if(author){
+      $(".list-inner p:nth-child(2)").eq(0).append("作者：",author);
+    }else{
+      $(".list-inner p:nth-child(2)").eq(0).append("作者：","作者不明");
+    }
+    if(publisher){
+      $(".list-inner p:nth-child(3)").eq(0).append("出版社：",publisher);
+    }else{
+      $(".list-inner p:nth-child(3)").eq(0).append("出版社：","出版社不明");
+    }
     //lists-inner aに固定の文字列、適切なリンクを配置
     $(".list-inner a").eq(0).append("書籍情報").attr("href",link);
     });
 }
-/*
-$(function(){
-  $("ul").append("<li>");
-    $(".lists li").addClass("lists-item");///////////////////////////ここまでは動作問題なし！！！！！！！！！
-    $(".lists-item").eq(index).append("<div>");
-    $(".lists-item div").addClass("list-inner");//固定！！！！
-    $(".list-inner").eq(index).append("<p>","<p>","<p>","<a>");//html要素を必要な数展開。
-    $(".list-inner p:nth-child(1)").eq(index).append("タイトル:",contentTitle);//pのそれぞれに固定の文字列を追加する。
-    $(".list-inner p:nth-child(2)").eq(index).append("作者:",author);
-    $(".list-inner p:nth-child(3)").eq(index).append("出版社:",publisher);
-    $(".list-inner a").eq(index).append("書籍情報").attr("href",link);
-})*/
 
+function displayError(err){
+  if(pageCount === 1){
+    //通信失敗時のメッセージを表記させるためのdivを作成
+    $(".inner").eq(0).prepend("<div>")
+    //クラス名をmessageとする
+    $(".inner div").addClass("message");
+    //二行でテキストを表記する
+    $(".message").append("検索キーワードが有効ではありません。","<br>","１文字以上で検索してください。")
+  }
 
-    /*
-    console.log(pageCount);
-    console.log(searchWord);
-    $(".search-btn").on(click,function(){
-      let test = $("#search-input").val();
-      console.log(test);
-    })
-        $("#search-input").change(function() {
-      let val1 = $(this).val();// valueを取得
-      console.log(val1);
-    });*/
-//セレクタがオブジェクトだからattrはエラーになる？セレクタがオブジェクトだとエラーになるメソッドも存在する。appendは平気なやつ？
-//$(".lists-inner a")ここは問題ない、他のコードを当てはめたら動く
-//("href",link)引数も問題ない
-//問題があるのは[].attr()の部分。attrの前に数字がつくとなぜかエラー。.appendは動く。エラーの原因を調べる必要有り。
-
-
-
-
-/*　　『動きの言語化』
-serchinputに入力された文字をserchWordという変数に置き換える。
-そのserchWordを検索機能のある図書館のURLのsearch?titleに送る。
-その検索結果を取得して元データに反映。
-その時のデータはjson形式、Pタグ？で取得。
-その取得データは20件まで表示する様にpageCountで指定。
-取得データはlist-itemとして表示。
-
-　　　『調べるべき事柄』
-
-*/
+}
+//リセットボタンを押したときに処理を開始する
+$(".reset-btn").on("click",function(){
+  //検索結果を表示しているliを削除する
+  $("li").remove();
+  //pageCountを0にして次の検索時に1ページ目を表示できるようにする
+  pageCount = 0;
+  ///検索ワードをからの状態に戻す
+  $("#search-input").val("");
+});
