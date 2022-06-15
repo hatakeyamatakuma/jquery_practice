@@ -99,19 +99,38 @@ function displayResult(getResult){
 
 };
 
-function displayError(err){
-  console.log(err)
+function displayError(errContent){
   //,messageが既に表示されている場合処理を行う
   if($(".message").length){
     //.messageを消去する
     $(".message").remove();
   };
+  //httpステータスをerrCodeとする
+  const errCode = errContent.status
   //通信失敗時のメッセージを表記させるためのdivを作成
   $(".inner").eq(0).prepend("<div>")
   //クラス名をmessageとする
   $(".inner div").addClass("message");
-  //二行でテキストを表記する
-  $(".message").append("検索キーワードが有効ではありません。","<br>","１文字以上で検索してください。")
+  //errCodeが400だった場合以下の処理を行う
+  if(errCode === 400){
+      //二行でテキストを表記する
+    $(".message").append("検索キーワードが有効ではありません。","<br>","１文字以上で検索してください。")
+  };
+  //errCodeが404だった場合以下処理を行う
+  if(errCode === 404){
+    $(".message").append("存在しないページです");
+  }
+  //errCodeが200だった場合以下の処理を行う
+  if(errCode === 200){
+    $(".message").append("システムに異常が見受けられます","<br>","管理者へ報告してください");
+  }
+  //errCodeが500だった場合以下の処理を行う
+  if(errCode === 500){
+    $(".message").append("通信先のファイルに異常があります");
+  }
+  if(errCode === 400 || errCode === 404 || errCode === 200 || errCode === 500){
+  //上記に当てはまらない場合は下記の処理を実行する
+  }else{$(".message").append("予期しないエラーが発生しました","<br>","管理者へ報告してください");}
 };
 
 //リセットボタンを押したときに処理を開始する
