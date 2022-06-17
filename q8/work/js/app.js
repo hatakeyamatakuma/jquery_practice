@@ -35,7 +35,6 @@ $(function() {
   })
 });
 
-
 //呼び出される関数
 function displayResult(getResult){
   //この処理に入る前にfail処理に入り、メッセージ文が表示されている場合、消去する
