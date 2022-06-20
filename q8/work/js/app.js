@@ -54,9 +54,9 @@ function displayResult(getResult){
     //最大20回の繰り返し処理
     $(content).each(function(index, title){
       //検索結果の中のタイトルや作者名等を変数として定義
-      const contentTitle = "タイトル：" + content[index]["title"];
-      const author = "作者：" + content[index]["dc:creator"];
-      const publisher = "出版社：" + content[index]["dc:publisher"][0]
+      const contentTitle = content[index]["title"];
+      const author = content[index]["dc:creator"];
+      const publisher = content[index]["dc:publisher"][0]
       const link = content[index]["link"]["@id"];
       //生成されるhtml要素を想定し代入。目的が同じデータ元は分けて書くと帰って冗長の為
       $(".lists").prepend("<li class=lists-item><div class=list-inner><p></p><p></p><p></p><a></a></div></li>")
@@ -108,21 +108,21 @@ $(".reset-btn").on("click",function(){
 
 //以下がデータ加工した変数を指定の位置に配置するメソッド
 function addContentTitle(contentTitle){
-  $(".list-inner p:nth-child(1)").eq(0).append(contentTitle);
+  $(".list-inner p:nth-child(1)").eq(0).append("タイトル：",contentTitle);
 };
 function addAuthor(author){
   if(author){
-    $(".list-inner p:nth-child(2)").eq(0).append(author);
+    $(".list-inner p:nth-child(2)").eq(0).append("作者：",author);
   }else{
     //作者、出版社に関してはデータがない場合空欄になってしまうので、その場合"不明"と表記する。なおタイトルが空欄になることはないため省略している
-    $(".list-inner p:nth-child(2)").eq(0).append("作者不明");
+    $(".list-inner p:nth-child(2)").eq(0).append("作者：","作者不明");
   };
 };
 function addPublisher(publisher){
   if(publisher){
-    $(".list-inner p:nth-child(3)").eq(0).append(publisher);
+    $(".list-inner p:nth-child(3)").eq(0).append("出版社：",publisher);
   }else{
-    $(".list-inner p:nth-child(3)").eq(0).append("出版社不明");
+    $(".list-inner p:nth-child(3)").eq(0).append("出版社：","出版社不明");
   };
 };
 function addLink(link){
