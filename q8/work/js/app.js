@@ -53,20 +53,20 @@ function displayResult(getResult){
   if(content){
     //最大20回の繰り返し処理
     $(content).each(function(index, title){
-      //検索結果の中のタイトルや作者名等を変数として定義
-      const contentTitle = content[index]["title"];
-      const author = content[index]["dc:creator"];
-      const publisher = content[index]["dc:publisher"][0]
-      const link = content[index]["link"]["@id"];
       //生成されるhtml要素を想定し代入。目的が同じデータ元は分けて書くと帰って冗長の為
       $(".lists").prepend("<li class=lists-item><div class=list-inner><p></p><p></p><p></p><a></a></div></li>")
-      //指定の位置に変数を配置
-      addContentTitle(contentTitle);
-      addAuthor(author);
-      addPublisher(publisher);
-      addLink(link);
+      //検索結果の中のタイトルや作者名等を変数として定義
+      const contentTitle = content[index].title;
+      const author = content[index]["dc:creator"];
+      const publisher = content[index]["dc:publisher"][0];
+      const link = content[index].link["@id"];
+      //作成した変数の中身あった場合trueの表記処理をなかった場合falseの不明の処理を行う
+      contentTitle ? $(".list-inner p:nth-child(1)").eq(0).append("タイトル：",contentTitle) : $(".list-inner p:nth-child(1)").eq(0).append("タイトル：","タイトル不明");
+      author ? $(".list-inner p:nth-child(2)").eq(0).append("作者：",author) : $(".list-inner p:nth-child(2)").eq(0).append("作者：","作者不明");
+      publisher ? $(".list-inner p:nth-child(3)").eq(0).append("出版社：",publisher): $(".list-inner p:nth-child(3)").eq(0).append("出版社：","出版社不明");
+      link ? $(".list-inner a").eq(0).append("書籍情報").attr("href",link).attr("target","_blank") : $(".list-inner a").eq(0).append("書籍情報").attr("href","javascript:void(0)").attr("target","_blank");
       });
-  //検索結果がなかった場合以下の処理を行う
+  // 検索結果がなかった場合以下の処理を行う
   }else{
     //検索結果なしのメッセージを表記させるためのdivを作成
     $(".inner").prepend("<div class= message>検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</div>");
@@ -75,7 +75,7 @@ function displayResult(getResult){
 };
 //error時に時効される関数
 function displayError(errContent){
-  //.messageが既に表示されている場合処理を行う
+  // .messageが既に表示されている場合処理を行う
   if($(".message").length){
     //.messageを消去する
     $(".message").remove();
@@ -105,27 +105,3 @@ $(".reset-btn").on("click",function(){
   ///検索ワードをからの状態に戻す
   $("#search-input").val("");
 });
-
-//以下がデータ加工した変数を指定の位置に配置するメソッド
-function addContentTitle(contentTitle){
-  $(".list-inner p:nth-child(1)").eq(0).append("タイトル：",contentTitle);
-};
-function addAuthor(author){
-  if(author){
-    $(".list-inner p:nth-child(2)").eq(0).append("作者：",author);
-  }else{
-    //作者、出版社に関してはデータがない場合空欄になってしまうので、その場合"不明"と表記する。なおタイトルが空欄になることはないため省略している
-    $(".list-inner p:nth-child(2)").eq(0).append("作者：","作者不明");
-  };
-};
-function addPublisher(publisher){
-  if(publisher){
-    $(".list-inner p:nth-child(3)").eq(0).append("出版社：",publisher);
-  }else{
-    $(".list-inner p:nth-child(3)").eq(0).append("出版社：","出版社不明");
-  };
-};
-function addLink(link){
-    //lists-inner aに固定の文字列、適切なリンクを配置
-    $(".list-inner a").eq(0).append("書籍情報").attr("href",link).attr("target","_blank");
-};
