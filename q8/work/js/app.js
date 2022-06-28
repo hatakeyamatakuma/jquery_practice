@@ -52,17 +52,17 @@ function displayResult(getResult){
   //検索結果のcontentの中身があれば以下の処理を行う
   if(content){
     //最大20回の繰り返し処理
-    $(content).each(function(index, title){
-      //検索結果の中のタイトルや作者名等を変数として定義
-      let contentTitle = content[index].title;
-      let author = content[index]["dc:creator"];
-      let publisher = content[index]["dc:publisher"][0];
+    $(content).each(function(index){
+      //検索結果の中のタイトルや作者名等を変数として定義、検索結果がなかった場合不明と返すための三項演算子も作成
+      const contentTitle = content[index].title ? content[index].title : "タイトル不明";
+      const author = content[index]["dc:creator"] ? content[index]["dc:creator"] : "作者不明";
+      const publisher = content[index]["dc:publisher"][0] ? content[index]["dc:publisher"][0] : "出版社不明";
       const link = content[index].link["@id"];
-      //生成されるhtml要素を想定し代入。目的が同じデータ元は分けて書くと帰って冗長の為。検索結果がなかった場合不明と返すための三項演算子も代入時に組み込んであります
-      const htmlData = `<li class=lists-item><div class=list-inner><p>タイトル：${contentTitle ? contentTitle : contentTitle = "タイトル不明"}</p><p>作者：${author ? author : author = "作者不明"}</p><p>出版社：${publisher ? publisher : publisher = "出版社不明"}</p><a></a></div></li>`
+      //生成されるhtml要素を想定し代入。目的が同じデータ元は分けて書くと帰って冗長の為。
+      const htmlData = `<li class=lists-item><div class=list-inner><p>タイトル：${contentTitle}</p><p>作者：${author}</p><p>出版社：${publisher}</p><a target=_blank></a></div></li>`;
       $(".lists").prepend(htmlData);
       //文字列の中に関数は組み込めない為aのみ別で作成
-      $(".list-inner a").eq(0).append("書籍情報").attr("href",link).attr("target","_blank")
+      $(".list-inner a").eq(0).append("書籍情報").attr("href",link);
       });
   }else{
     //検索結果なしのメッセージを表記させるためのdivを作成
