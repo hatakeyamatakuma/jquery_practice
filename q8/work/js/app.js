@@ -59,10 +59,8 @@ function displayResult(getResult){
       const publisher = content[index]["dc:publisher"][0] ? content[index]["dc:publisher"][0] : "出版社不明";
       const link = content[index].link["@id"];
       //生成されるhtml要素を想定し代入。目的が同じデータ元は分けて書くと帰って冗長の為。
-      const htmlData = `<li class=lists-item><div class=list-inner><p>タイトル：${contentTitle}</p><p>作者：${author}</p><p>出版社：${publisher}</p><a target=_blank></a></div></li>`;
+      const htmlData = `<li class=lists-item><div class=list-inner><p>タイトル：${contentTitle}</p><p>作者：${author}</p><p>出版社：${publisher}</p><a target=_blank href="${link}">書籍情報</a></div></li>`;
       $(".lists").prepend(htmlData);
-      //文字列の中に関数は組み込めない為aのみ別で作成
-      $(".list-inner a").eq(0).append("書籍情報").attr("href",link);
       });
   }else{
     //検索結果なしのメッセージを表記させるためのdivを作成
